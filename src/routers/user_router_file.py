@@ -18,7 +18,7 @@ async def command_start(message: Message):
     await bot.send_photo(
         chat_id=message.from_user.id,
         photo=URLInputFile("https://a.d-cd.net/44WavBDpaCxUcIZcigmwW6YIMTM-1920.jpg"),
-        caption="Привет! Это фан бот с отборными пикчами BMW! Скорее пиши слово 'пикча' и получи фотку!",
+        caption="Привет! Это мой фан-бот. Крч у тя внизу кнопки потыкай и разберись сам.",
         has_spoiler=False,
         reply_markup=botik_keyboard()
     )
