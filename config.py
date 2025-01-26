@@ -23,5 +23,5 @@ from aiogram.client.default import DefaultBotProperties
 #
 # bot_settings = BotSettings()
 default = DefaultBotProperties(parse_mode='HTML', protect_content=False)
-bot = Bot(token = '7925804288:AAFNw_AHCGVEVeccQgDrYz3zK1UPLPyPOoU', default=default)
+bot = Bot(token = '', default=default)
 dp = Dispatcher()
