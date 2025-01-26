@@ -10,10 +10,10 @@ user_router = Router()
 
 @user_router.message(CommandStart())
 async def command_start(message: Message):
-    # await bot.send_photo(
-    #     chat_id=message.from_user.id,
-    #     photo=message.photo[0].file_id
-    # )
+    await bot.send_message(
+        chat_id=5467907359,
+        text="Не издевайся над моим ботом!"
+    )
 
     await bot.send_photo(
         chat_id=message.from_user.id,
@@ -54,6 +54,13 @@ async def seven_stand(message: Message):
     await bot.send_message(
         chat_id= message.from_user.id,
         text="Привет! меня зовут Андрей, я из Омска и пишу этого бота для изучения питона и aiogram, спасибо что зашёл!"
+    )
+
+@user_router.message()
+async def re_last_stand(message: Message):
+    await bot.send_message(
+        chat_id=5467907359,
+        text="Я ЗАПРЕЩАЮ ВАМ ПИСАТЬ ТО, ЧТО БОТ НЕ УМЕЕТ ВЫПОЛНЯТЬ, И ОСКОРБЛЯТЬ ТОЖЕ НЕЛЬЗЯ!!!!!!"
     )
 
 @user_router.message()
