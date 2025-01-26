@@ -1,6 +1,6 @@
 from aiogram import Router, F
 from aiogram.filters import Command, CommandStart
-from aiogram.types import Message, URLInputFile
+from aiogram.types import Message, URLInputFile, FSInputFile
 
 from config import bot
 from src.keyboards.user_keyboard import botik_keyboard, buttons
@@ -40,21 +40,22 @@ async def five_stand(message: Message):
             "https://sun9-69.userapi.com/impf/c305110/v305110120/6b0/PwawWP94k3o.jpg?size=538x448&quality=96&sign=437beb13bf20e3b3c6e5d0968de92804&type=album"),
         caption=("Получи мемасик")
     )
-    
+
 @user_router.message(F.text == buttons["video"])
 async def six_stand(message: Message):
     await bot.send_video(
         chat_id=message.from_user.id,
-        video=""
+        video=FSInputFile("sad/raketka.mp4"),
+        caption="Ваяяя Ракетка шальнаяяя"
     )
-    
+
 @user_router.message(F.text == buttons["help"])
 async def seven_stand(message: Message):
     await bot.send_message(
         chat_id= message.from_user.id,
         text="Привет! меня зовут Андрей, я из Омска и пишу этого бота для изучения питона и aiogram, спасибо что зашёл!"
     )
-        
+
 @user_router.message()
 async def last_stand(message: Message):
     await bot.send_message(
