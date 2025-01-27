@@ -4,8 +4,9 @@ from aiogram.utils.keyboard import ReplyKeyboardBuilder
 buttons = {"photo": "📷пикча",
            "video": "🎥видосик",
            "memas": "🎃мемчик",
-           "help": "О создателе"
-           
+           "help": "О создателе",
+           "korea": "Просто красная кнопка🔴"
+
            }
 
 def botik_keyboard():
@@ -22,4 +23,8 @@ def botik_keyboard():
     
     button = KeyboardButton(text=buttons["help"])
     kb_builder.add(button)
+
+    button = KeyboardButton(text=buttons["korea"])
+    kb_builder.row(button)
+
     return kb_builder.as_markup(resize_keyboard=True, is_persistent=True)
