@@ -32,13 +32,6 @@ async def three_stand(message: Message):
         caption=("Хотел пикчу? ДЕРЖИ!")
     )
 
-@user_router.message()
-async def korea_mem(message: Message):
-    await bot.send_audio(
-        chat_id=message.from_user.id,
-        audio=FSInputFile("ne_rikrol/rkbb.mp3")
-    )
-
 @user_router.message(F.text == buttons["memas"])
 async def five_stand(message: Message):
     await bot.send_photo(
@@ -61,6 +54,13 @@ async def seven_stand(message: Message):
     await bot.send_message(
         chat_id= message.from_user.id,
         text="Привет! меня зовут Андрей, я из Омска и пишу этого бота для изучения питона и aiogram, спасибо что зашёл!"
+    )
+
+@user_router.message()
+async def korea_mem(message: Message):
+    await bot.send_audio(
+        chat_id=message.from_user.id,
+        audio=FSInputFile("ne_rikrol/rkbb.mp3")
     )
 
 @user_router.message()
