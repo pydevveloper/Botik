@@ -56,7 +56,7 @@ async def seven_stand(message: Message):
         text="Привет! меня зовут Андрей, я из Омска и пишу этого бота для изучения питона и aiogram, спасибо что зашёл!"
     )
 
-@user_router.message()
+@user_router.message(F.text == buttons["korea"])
 async def korea_mem(message: Message):
     await bot.send_audio(
         chat_id=message.from_user.id,
