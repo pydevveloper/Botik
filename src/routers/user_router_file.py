@@ -7,14 +7,22 @@ from src.keyboards.user_keyboard import botik_keyboard, buttons, inline_keyboard
 
 user_router = Router()
 
+@user_router.message(CommandStart(), F.chat.id == 5467907359)
+async def command_start_0(message: Message):
+    await bot.send_message(
+        chat_id=message.from_user.id,
+        text="ПРЕДУПРЕЖДЕНИЕ: Не издевайся над моим ботом!"
+    )
+    await bot.send_photo(
+        chat_id=message.from_user.id,
+        photo=URLInputFile("https://a.d-cd.net/44WavBDpaCxUcIZcigmwW6YIMTM-1920.jpg"),
+        caption="Привет! Это мой фан-бот. Крч у тя внизу кнопки потыкай и разберись сам.",
+        has_spoiler=False,
+        reply_markup=botik_keyboard()
+    )
 
 @user_router.message(CommandStart())
 async def command_start(message: Message):
-    await bot.send_message(
-        chat_id=5467907359,
-        text="Не издевайся над моим ботом!"
-    )
-
     await bot.send_photo(
         chat_id=message.from_user.id,
         photo=URLInputFile("https://a.d-cd.net/44WavBDpaCxUcIZcigmwW6YIMTM-1920.jpg"),
@@ -63,11 +71,15 @@ async def korea_mem(message: Message):
         chat_id=message.from_user.id,
         audio=FSInputFile("ne_rikrol/rkbb.mp3")
     )
+    await bot.send_sticker(
+        chat_id=message.from_user.id,
+        sticker='CAACAgIAAxkBAAIFdGem9Ix-nCdmvQG6glrtEf3wH3nfAAIFAAPANk8T-WpfmoJrTXU2BA'
+    )
 
-@user_router.message()
+@user_router.message(F.chat.id == 5467907359)
 async def re_last_stand(message: Message):
     await bot.send_message(
-        chat_id=5467907359,
+        chat_id=message.from_user.id,
         text="Я ЗАПРЕЩАЮ ВАМ ПИСАТЬ ТО, ЧТО БОТ НЕ УМЕЕТ ВЫПОЛНЯТЬ, И ОСКОРБЛЯТЬ ТОЖЕ НЕЛЬЗЯ!!!!!!"
     )
 
@@ -77,3 +89,4 @@ async def last_stand(message: Message):
         chat_id=message.from_user.id,
         text="Я не знаю эту команду!"
     )
+    print(message.sticker.file_id)
