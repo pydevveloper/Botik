@@ -1,9 +1,9 @@
 from aiogram import Router, F
 from aiogram.filters import Command, CommandStart
-from aiogram.types import Message, URLInputFile, FSInputFile
+from aiogram.types import Message, URLInputFile, FSInputFile, CallbackQuery
 
 from config import bot
-from src.keyboards.user_keyboard import botik_keyboard, buttons
+from src.keyboards.user_keyboard import botik_keyboard, buttons, inline_keyboard
 
 user_router = Router()
 
@@ -38,7 +38,8 @@ async def five_stand(message: Message):
         chat_id= message.from_user.id,
         photo=URLInputFile(
             "https://sun9-69.userapi.com/impf/c305110/v305110120/6b0/PwawWP94k3o.jpg?size=538x448&quality=96&sign=437beb13bf20e3b3c6e5d0968de92804&type=album"),
-        caption=("Получи мемасик")
+        caption=("Получи мемасик"),
+        reply_markup=inline_keyboard()
     )
 
 @user_router.message(F.text == buttons["video"])
