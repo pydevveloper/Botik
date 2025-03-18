@@ -1,8 +1,7 @@
-from aiofiles.os import remove
 from aiogram import Router, F
 from aiogram.filters import Command, CommandStart
 from aiogram.fsm.context import FSMContext
-from aiogram.types import Message, URLInputFile, FSInputFile, CallbackQuery, ReplyKeyboardRemove
+from aiogram.types import Message, URLInputFile, FSInputFile, CallbackQuery, ReplyKeyboardRemove, Contact, KeyboardButton
 
 from config import bot
 from src.keyboards.regestration_kb import rg_kb, buttons1
@@ -15,29 +14,36 @@ user_router = Router()
 async def command_start(message: Message):
     await bot.send_message(
         chat_id=message.from_user.id,
-        text="Пожалуйста зарегестрируйтесь",
+        text="Пожалуйста, зарегистрируйтесь, отправив свой контакт:",
         reply_markup=rg_kb()
     )
 
-@user_router.message(F.text == buttons1["regestration"])
-async def two_stand(message: Message, state: FSMContext):
-    await state.set_state(
-        User.wait_name
-    )
-    await bot.send_message(
-        chat_id=message.from_user.id,
-        text="Введите Имя:",
+@user_router.message(F.contact)
+async def handle_contact(message: Message, state: FSMContext):
+    contact: Contact = message.contact
+    phone_number = contact.phone_number
+
+    # Сохраняем номер телефона в состоянии
+    await state.update_data(phone_number=phone_number)
+
+    # Переводим пользователя в состояние ожидания имени
+    await state.set_state(User.wait_name)
+    await message.answer(
+        "Спасибо за ваш контакт! Теперь введите ваше имя:",
         reply_markup=ReplyKeyboardRemove()
     )
 
 @user_router.message(User.wait_name)
 async def twotwo_stand(message: Message, state: FSMContext):
-    name=message.text
-    await state.update_data(name_key=name)
-    await state.set_state(
-        User.menu
-    )
+    name = message.text
+    data = await state.get_data()
+    phone_number = data.get("phone_number", "не указан")
 
+    # Сохраняем имя в состоянии
+    await state.update_data(name_key=name)
+    await state.set_state(User.menu)
+
+    # Отправляем приветственное сообщение
     await bot.send_sticker(
         chat_id=message.from_user.id,
         sticker='CAACAgIAAxkBAAIFdGem9Ix-nCdmvQG6glrtEf3wH3nfAAIFAAPANk8T-WpfmoJrTXU2BA'
@@ -46,17 +52,19 @@ async def twotwo_stand(message: Message, state: FSMContext):
     await bot.send_photo(
         chat_id=message.from_user.id,
         photo=URLInputFile("https://a.d-cd.net/44WavBDpaCxUcIZcigmwW6YIMTM-1920.jpg"),
-        caption=f"Привет, {name}! Это мой фан-бот. Крч у тя внизу кнопки потыкай и разберись сам.",
+        caption=f"Привет, {name}! Твой номер телефона: {phone_number}. Это мой фан-бот. Крч у тя внизу кнопки потыкай и разберись сам.",
         has_spoiler=False,
         reply_markup=botik_keyboard()
     )
+
+# Остальные обработчики остаются без изменений
 
 @user_router.message(F.text == buttons["photo"], User.menu)
 async def three_stand(message: Message):
     await bot.send_photo(
         chat_id=message.from_user.id,
-        photo=URLInputFile(
-            "https://i.ytimg.com/vi/OsFQakVNkkc/maxresdefault.jpg?sqp=-oaymwEmCIAKENAF8quKqQMa8AEB-AH-CYAC0AWKAgwIABABGGUgXihOMA8=&amp;rs=AOn4CLDpc_ePYz5GWJfI0tijAffHP0F-ng"),
+        photo=FSInputFile(
+            "mzmz/maxresdefault.jpg"),
         caption=("Хотел пикчу? ДЕРЖИ!")
     )
 
