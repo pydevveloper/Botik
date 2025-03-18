@@ -4,7 +4,7 @@ from aiogram.utils.keyboard import ReplyKeyboardBuilder, InlineKeyboardBuilder
 buttons = {"photo": "📷пикча",
            "video": "🎥видосик",
            "memas": "🎃мемчик",
-           "help": "О создателе🔰",
+           "help": "🔰О создателе🔰",
            "korea": "Просто красная кнопка⭕",
             "hinx": "Доп. Информация✔"
            }
