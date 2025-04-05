@@ -3,7 +3,7 @@ from aiogram.filters import Command, CommandStart
 from aiogram.fsm.context import FSMContext
 from aiogram.types import Message, URLInputFile, FSInputFile, CallbackQuery, ReplyKeyboardRemove, Contact, KeyboardButton
 
-from config import bot
+from config import bot, supabase
 from src.keyboards.regestration_kb import rg_kb, buttons1
 from src.keyboards.user_keyboard import botik_keyboard, buttons, inline_keyboard
 from src.states.user_states import User
@@ -17,7 +17,12 @@ async def command_start(message: Message):
         text="Пожалуйста, зарегистрируйтесь, отправив свой контакт:",
         reply_markup=rg_kb()
     )
-
+    response = (
+    supabase.table("UserData")
+    .insert({"chat_id": message.from_user.id })
+    .execute()
+        )
+    
 @user_router.message(F.contact)
 async def handle_contact(message: Message, state: FSMContext):
     contact: Contact = message.contact

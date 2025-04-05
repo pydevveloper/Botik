@@ -1,8 +1,15 @@
+import os
+
 from aiogram import Bot
 from aiogram import Dispatcher
 from aiogram.client.default import DefaultBotProperties
 from pydantic_settings import BaseSettings
+from supabase import create_client, Client
 
+
+url: str = os.environ.get("SUPABASE_URL")
+key: str = os.environ.get("SUPABASE_KEY")
+supabase: Client = create_client(url, key)
 
 
 class EnvSettings(BaseSettings):
