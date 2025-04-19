@@ -17,11 +17,9 @@ async def command_start(message: Message):
         text="Пожалуйста, зарегистрируйтесь, отправив свой контакт:",
         reply_markup=rg_kb()
     )
-    response = (
-    supabase.table("UserData")
-    .insert({"chat_id": message.from_user.id })
-    .execute()
-        )
+    response = supabase.table("UserData").select("*").eq("chat_id", message.from_user.id).execute() 
+    supabase.table("UserData").insert({"chat_id": message.from_user.id,
+                                       "date_reg": str(message.date) }).execute()       
     
 @user_router.message(F.contact)
 async def handle_contact(message: Message, state: FSMContext):
