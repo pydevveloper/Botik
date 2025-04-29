@@ -11,15 +11,21 @@ from src.states.user_states import User
 user_router = Router()
 
 @user_router.message(CommandStart())
-async def command_start(message: Message):
-    await bot.send_message(
+async def command_start(message: Message, state: FSMContext):
+
+    response = supabase.table("UserData").select("*").eq("chat_id", message.from_user.id).execute() 
+    if not response.data:
+        supabase.table("UserData").insert({"chat_id": message.from_user.id,
+                                            "date_reg": str(message.date) }).execute() 
+        await bot.send_message(
         chat_id=message.from_user.id,
         text="Пожалуйста, зарегистрируйтесь, отправив свой контакт:",
         reply_markup=rg_kb()
-    )
-    response = supabase.table("UserData").select("*").eq("chat_id", message.from_user.id).execute() 
-    supabase.table("UserData").insert({"chat_id": message.from_user.id,
-                                       "date_reg": str(message.date) }).execute()       
+    ) 
+        
+    else:
+        await twotwo_stand(message, state)           
+
     
 @user_router.message(F.contact)
 async def handle_contact(message: Message, state: FSMContext):
