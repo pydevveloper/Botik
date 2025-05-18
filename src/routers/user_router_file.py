@@ -107,7 +107,7 @@ async def seven_stand(message: Message):
 
 @user_router.message(F.text == buttons["korea"], User.menu)
 async def korea_mem(message: Message):
-    await bot.send_audio(
+    await bot.send_voice(
         chat_id=message.from_user.id,
-        audio=FSInputFile("ne_rikrol/rkbb.mp3")
+        voice=FSInputFile("ne_rikrol/rkbb.ogg")
     )
