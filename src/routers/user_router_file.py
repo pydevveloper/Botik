@@ -3,7 +3,7 @@ from aiogram.filters import Command, CommandStart
 from aiogram.fsm.context import FSMContext
 from aiogram.types import Message, URLInputFile, FSInputFile, CallbackQuery, ReplyKeyboardRemove, Contact, KeyboardButton
 
-from config import bot
+from config import bot, supabase
 from src.keyboards.regestration_kb import rg_kb, buttons1
 from src.keyboards.user_keyboard import botik_keyboard, buttons, inline_keyboard
 from src.states.user_states import User
@@ -11,13 +11,22 @@ from src.states.user_states import User
 user_router = Router()
 
 @user_router.message(CommandStart())
-async def command_start(message: Message):
-    await bot.send_message(
+async def command_start(message: Message, state: FSMContext):
+
+    response = supabase.table("UserData").select("*").eq("chat_id", message.from_user.id).execute() 
+    if not response.data:
+        supabase.table("UserData").insert({"chat_id": message.from_user.id,
+                                            "date_reg": str(message.date) }).execute() 
+        await bot.send_message(
         chat_id=message.from_user.id,
         text="Пожалуйста, зарегистрируйтесь, отправив свой контакт:",
         reply_markup=rg_kb()
-    )
+    ) 
+        
+    else:
+        await twotwo_stand(message, state)           
 
+    
 @user_router.message(F.contact)
 async def handle_contact(message: Message, state: FSMContext):
     contact: Contact = message.contact
@@ -98,7 +107,7 @@ async def seven_stand(message: Message):
 
 @user_router.message(F.text == buttons["korea"], User.menu)
 async def korea_mem(message: Message):
-    await bot.send_audio(
+    await bot.send_voice(
         chat_id=message.from_user.id,
-        audio=FSInputFile("ne_rikrol/rkbb.mp3")
+        voice=FSInputFile("ne_rikrol/rkbb.ogg")
     )
